@@ -8,7 +8,7 @@ import be.klak.junit.jasmine.JasmineTestRunner;
 import be.klak.rhino.RhinoContext;
 
 @RunWith(JasmineTestRunner.class)
-@JasmineSuite(sources = "jquery-1.6.1.js", sourcesRootDir = "src/test/javascript")
+@JasmineSuite(sourceInclude = "jquery-1.6.1.js", sourceDir = "src/test/javascript")
 public class EnvUtilsTest {
 
 	@Before

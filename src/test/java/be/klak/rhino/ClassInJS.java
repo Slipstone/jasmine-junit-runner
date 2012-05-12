@@ -3,26 +3,27 @@ package be.klak.rhino;
 import org.mozilla.javascript.ScriptableObject;
 
 public class ClassInJS extends ScriptableObject {
+	private static final long serialVersionUID = 1L;
 
-    private int prop = 0;
+	private int prop = 0;
 
-    public ClassInJS() {
-    }
+	public ClassInJS() {
+	}
 
-    public void increaseProp() {
-        prop++;
-    }
+	public void increaseProp() {
+		prop++;
+	}
 
-    public String jsFunction_fn() {
-        return "fn";
-    }
+	public String jsFunction_fn() {
+		return "fn";
+	}
 
-    public int jsGet_prop() {
-        return prop;
-    }
+	public int jsGet_prop() {
+		return prop;
+	}
 
-    @Override
-    public String getClassName() {
-        return "ClassInJS";
-    }
+	@Override
+	public String getClassName() {
+		return "ClassInJS";
+	}
 }

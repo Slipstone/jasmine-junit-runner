@@ -2,7 +2,7 @@ package be.klak.junit.jasmine.classes;
 
 import be.klak.junit.jasmine.JasmineSuite;
 
-@JasmineSuite(specs = { "crashingSpec.js" })
+@JasmineSuite(specInclude = { "crashingSpec.js" })
 public class JasmineTestRunnerExceptionInSpec {
 
 }

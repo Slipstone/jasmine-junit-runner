@@ -46,7 +46,7 @@ class JasmineSpecRunnerGenerator {
 		template = template.replaceAll(
 				TemplatePlaceholders.SOURCE_FILES_TO_INCLUDE.getPlaceholder(),
 				getJavascriptFileIncludes("./../../../main/webapp/js",
-						suite.sources()));
+						suite.sourceInclude()));
 		template = template.replaceAll(
 				TemplatePlaceholders.SPEC_FILES_TO_INCLUDE.getPlaceholder(),
 				getJavascriptFileIncludes("./../specs", jasmineSpecs));
@@ -63,7 +63,7 @@ class JasmineSpecRunnerGenerator {
 	private String replaceRelativePathsForLibs(final String template) {
 		return template.replaceAll(
 				TemplatePlaceholders.RELATIVE_PATH.getPlaceholder(),
-				suite.jsRootDir());
+				suite.specDir());
 	}
 
 	private String getJavascriptFileIncludes(final String path,

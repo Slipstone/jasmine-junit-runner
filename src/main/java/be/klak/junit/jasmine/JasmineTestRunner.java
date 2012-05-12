@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.Description;
@@ -16,6 +15,8 @@ import org.mozilla.javascript.tools.debugger.Main;
 
 import be.klak.rhino.RhinoContext;
 
+import com.slipstone.FindFiles;
+
 public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
@@ -25,7 +26,7 @@ public class JasmineTestRunner extends Runner {
 
 	protected final RhinoContext rhinoContext;
 	protected final JasmineSuite suiteAnnotation;
-	private final Class<?> testClass;
+	protected final Class<?> testClass;
 
 	@JasmineSuite
 	private class DefaultSuite {
@@ -50,16 +51,22 @@ public class JasmineTestRunner extends Runner {
 	private RhinoContext setUpRhinoScope() {
 		final RhinoContext context = new RhinoContext();
 
-		pre(context);
-
-		context.loadEnv(suiteAnnotation.jsRootDir());
+		context.loadEnv();
 		setUpJasmine(context);
 
-		context.load(suiteAnnotation.sourcesRootDir() + "/",
-				suiteAnnotation.sources());
-		context.load(suiteAnnotation.jsRootDir() + "/specs/",
+		pre(context);
+
+		context.load(suiteAnnotation.sourceDir() + "/", FindFiles.findFiles(
+				suiteAnnotation.sourceDir(), suiteAnnotation.sourceInclude(),
+				suiteAnnotation.sourceExclude()));
+		context.load(suiteAnnotation.specDir() + "/",
 				getJasmineSpecs(suiteAnnotation));
 		return context;
+	}
+
+	private String[] getJasmineSpecs(final JasmineSuite suiteAnnotation) {
+		return FindFiles.findFiles(suiteAnnotation.specDir(),
+				suiteAnnotation.specInclude(), suiteAnnotation.specExclude());
 	}
 
 	protected void pre(final RhinoContext context) {
@@ -104,15 +111,6 @@ public class JasmineTestRunner extends Runner {
 					.getAnnotation(JasmineSuite.class);
 		}
 		return suiteAnnotation;
-	}
-
-	private String[] getJasmineSpecs(final JasmineSuite suiteAnnotation) {
-		if (suiteAnnotation.specs().length == 0) {
-			return new String[] { StringUtils.uncapitalize(
-					testClass.getSimpleName()).replace("Test", "Spec")
-					+ ".js" };
-		}
-		return suiteAnnotation.specs();
 	}
 
 	private void resetEnvjsWindowSpace() {
@@ -216,8 +214,8 @@ public class JasmineTestRunner extends Runner {
 		if (suiteAnnotation.generateSpecRunner()) {
 			final String[] jasmineSpecs = getJasmineSpecs(suiteAnnotation);
 			new JasmineSpecRunnerGenerator(jasmineSpecs, suiteAnnotation,
-					suiteAnnotation.jsRootDir() + "/runners",
-					testClass.getSimpleName() + "Runner.html").generate();
+					suiteAnnotation.runnersDir(), testClass.getSimpleName()
+							+ "Runner.html").generate();
 		}
 	}
 

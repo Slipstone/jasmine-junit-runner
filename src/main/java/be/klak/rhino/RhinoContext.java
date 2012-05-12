@@ -125,6 +125,7 @@ public class RhinoContext {
 	}
 
 	public void load(final String fileName) {
+		System.out.println("RhinoContext loading: " + fileName);
 		evalJS("load('" + fileName + "')");
 		// Main.processFile(this.jsContext, this.jsScope, fileName);
 	}
@@ -153,7 +154,7 @@ public class RhinoContext {
 		return jsScope;
 	}
 
-	public void loadEnv(final String bundleDir) {
+	public void loadEnv() {
 		// TODO ensure rhino 1.7R3 instead of R2 -> geen shim nodig + paths
 		// gedoe in orde zetten hier
 		try {
