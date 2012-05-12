@@ -56,6 +56,11 @@ public class JasmineTestRunner extends Runner {
 
 		pre(context);
 
+		context.load(
+				suiteAnnotation.mockDir() + "/",
+				FindFiles.findFiles(suiteAnnotation.mockDir(),
+						suiteAnnotation.mockInclude(),
+						suiteAnnotation.mockExclude()));
 		context.load(suiteAnnotation.sourceDir() + "/", FindFiles.findFiles(
 				suiteAnnotation.sourceDir(), suiteAnnotation.sourceInclude(),
 				suiteAnnotation.sourceExclude()));
