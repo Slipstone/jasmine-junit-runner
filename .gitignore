@@ -1,0 +1,10 @@
+target
+bin
+bin-test
+*.DS_Store
+*.class
+*.swp
+*.out
+*.lock
+*.log
+*~
