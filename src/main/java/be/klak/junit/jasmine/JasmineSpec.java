@@ -17,12 +17,15 @@ class JasmineSpec {
 		PASSED, FAILED, SKIPPED
 	}
 
+	public static int specCount = 1;
+
 	private final Description description;
 	private final NativeObject spec;
 
 	JasmineSpec(final NativeObject spec) {
 		this.spec = spec;
-		final String descriptionString = (String) spec.get("description", spec);
+		final String descriptionString = specCount++ + ") "
+				+ (String) spec.get("description", spec);
 		this.description = Description
 				.createSuiteDescription(descriptionString);
 	}
