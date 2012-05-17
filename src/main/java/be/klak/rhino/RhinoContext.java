@@ -4,15 +4,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.IOUtils;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.tools.shell.Global;
+import org.mozilla.javascript.tools.shell.Main;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -125,7 +127,6 @@ public class RhinoContext {
 	}
 
 	public void load(final String fileName) {
-		System.out.println("RhinoContext loading: " + fileName);
 		evalJS("load('" + fileName + "')");
 		// Main.processFile(this.jsContext, this.jsScope, fileName);
 	}
@@ -169,13 +170,21 @@ public class RhinoContext {
 	}
 
 	private Global createJavascriptScopeForContext(final Context jsContext) {
+		try {
+			final Field scriptCache = Main.class
+					.getDeclaredField("scriptCache");
+			scriptCache.setAccessible(true);
+			((Map<?, ?>) scriptCache.get(null)).clear();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 		final Global scope = new Global();
 		scope.init(jsContext);
 		return scope;
 	}
 
 	private Context createJavascriptContext() {
-		final Context jsContext = ContextFactory.getGlobal().enterContext();
+		final Context jsContext = Context.enter();
 		jsContext.setOptimizationLevel(-1);
 		jsContext.setLanguageVersion(Context.VERSION_1_5); // TODO 1.8 plx
 		jsContext.setErrorReporter(new ChainedErrorReporter(jsContext

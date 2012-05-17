@@ -23,7 +23,7 @@ public class DescriptionsRecursiveTreeInRunnerTest {
 		assertThat(root.getDisplayName()).isEqualTo("root");
 		assertThat(root.getChildren()).hasSize(3);
 
-		assertThat(root.getChildren().get(0).getDisplayName()).isEqualTo(
+		assertThat(root.getChildren().get(0).getDisplayName()).startsWith(
 				"rootTest");
 		assertChild1AndChildren(root);
 		assertChild2AndChildren(root);
@@ -32,7 +32,7 @@ public class DescriptionsRecursiveTreeInRunnerTest {
 		assertThat(root2.getDisplayName()).isEqualTo("root2");
 		assertThat(root2.getChildren()).hasSize(1);
 
-		assertThat(root2.getChildren().get(0).getDisplayName()).isEqualTo(
+		assertThat(root2.getChildren().get(0).getDisplayName()).startsWith(
 				"root2Test");
 	}
 
@@ -41,7 +41,7 @@ public class DescriptionsRecursiveTreeInRunnerTest {
 		assertThat(child2.getDisplayName()).isEqualTo("child2");
 
 		assertThat(child2.getChildren()).hasSize(1);
-		assertThat(child2.getChildren().get(0).getDisplayName()).isEqualTo(
+		assertThat(child2.getChildren().get(0).getDisplayName()).startsWith(
 				"child2Test");
 	}
 
@@ -50,14 +50,14 @@ public class DescriptionsRecursiveTreeInRunnerTest {
 		assertThat(child1.getDisplayName()).isEqualTo("child1");
 
 		assertThat(child1.getChildren()).hasSize(2);
-		assertThat(child1.getChildren().get(0).getDisplayName()).isEqualTo(
+		assertThat(child1.getChildren().get(0).getDisplayName()).startsWith(
 				"child1Test");
 		final Description grandchild = child1.getChildren().get(1);
 		assertThat(grandchild.getDisplayName()).isEqualTo("grandchild");
 
 		assertThat(grandchild.getChildren()).hasSize(1);
-		assertThat(grandchild.getChildren().get(0).getDisplayName()).isEqualTo(
-				"grandchildTest");
+		assertThat(grandchild.getChildren().get(0).getDisplayName())
+				.startsWith("grandchildTest");
 	}
 
 }

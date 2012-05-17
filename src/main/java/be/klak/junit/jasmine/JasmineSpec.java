@@ -20,11 +20,12 @@ class JasmineSpec {
 	private final Description description;
 	private final NativeObject spec;
 
-	JasmineSpec(final NativeObject spec) {
+	JasmineSpec(final NativeObject spec, final Description parentDescription) {
 		this.spec = spec;
 		final String descriptionString = (String) spec.get("description", spec);
 		this.description = Description
-				.createSuiteDescription(descriptionString);
+				.createSuiteDescription(String.format("%s(%s)",
+						descriptionString, parentDescription.getDisplayName()));
 	}
 
 	public Description getDescription() {

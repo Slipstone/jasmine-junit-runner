@@ -14,49 +14,62 @@ class JasmineJSSuiteConverter {
 
 	private final RhinoContext context;
 
-	public JasmineJSSuiteConverter(RhinoContext context) {
+	public JasmineJSSuiteConverter(final RhinoContext context) {
 		this.context = context;
 	}
 
-	public JasmineDescriptions convertToJunitDescriptions(Class<?> testClass, NativeArray baseSuites) {
-		Description rootDescription = Description.createSuiteDescription(testClass);
-		List<JasmineSpec> specs = convertSuiteArrayToDescriptions(baseSuites, rootDescription, new ArrayList<String>());
+	public JasmineDescriptions convertToJunitDescriptions(
+			final Class<?> testClass, final NativeArray baseSuites) {
+		final Description rootDescription = Description
+				.createSuiteDescription(testClass);
+		final List<JasmineSpec> specs = convertSuiteArrayToDescriptions(
+				baseSuites, rootDescription, new ArrayList<String>());
 		return new JasmineDescriptions(rootDescription, specs);
 	}
 
-	private List<JasmineSpec> convertSuiteArrayToDescriptions(NativeArray suiteArray, Description rootDescription,
-			List<String> processed) {
-		List<JasmineSpec> specs = new ArrayList<JasmineSpec>();
-		for (Object idObj : suiteArray.getIds()) {
-			NativeObject suite = (NativeObject) suiteArray.get((Integer) idObj, suiteArray);
+	private List<JasmineSpec> convertSuiteArrayToDescriptions(
+			final NativeArray suiteArray, final Description rootDescription,
+			final List<String> processed) {
+		final List<JasmineSpec> specs = new ArrayList<JasmineSpec>();
+		for (final Object idObj : suiteArray.getIds()) {
+			final NativeObject suite = (NativeObject) suiteArray.get(
+					(Integer) idObj, suiteArray);
 
-			String description = (String) suite.get("description", suite);
+			final String description = (String) suite.get("description", suite);
 			if (!processed.contains(description)) {
-				Description suiteDescription = addSuiteToDescription(rootDescription, processed, description);
+				final Description suiteDescription = addSuiteToDescription(
+						rootDescription, processed, description);
 				specs.addAll(convertToJunitDescription(suite, suiteDescription));
 
-				NativeArray subSuites = (NativeArray) context.executeFunction(suite, "suites");
-				specs.addAll(convertSuiteArrayToDescriptions(subSuites, suiteDescription, processed));
+				final NativeArray subSuites = (NativeArray) context
+						.executeFunction(suite, "suites");
+				specs.addAll(convertSuiteArrayToDescriptions(subSuites,
+						suiteDescription, processed));
 			}
 		}
 
 		return specs;
 	}
 
-	private Description addSuiteToDescription(Description description, List<String> processed, String suiteName) {
+	private Description addSuiteToDescription(final Description description,
+			final List<String> processed, final String suiteName) {
 		processed.add(suiteName);
-		Description suiteDescription = Description.createSuiteDescription(suiteName, (Annotation[]) null);
+		final Description suiteDescription = Description
+				.createSuiteDescription(suiteName, (Annotation[]) null);
 		description.addChild(suiteDescription);
 		return suiteDescription;
 	}
 
-	private List<JasmineSpec> convertToJunitDescription(NativeObject suite, Description description) {
-		List<JasmineSpec> specsMap = new ArrayList<JasmineSpec>();
-		NativeArray specsArray = (NativeArray) context.executeFunction(suite, "specs");
-		for (Object idObj : specsArray.getIds()) {
-			NativeObject spec = (NativeObject) specsArray.get((Integer) idObj, specsArray);
+	private List<JasmineSpec> convertToJunitDescription(
+			final NativeObject suite, final Description description) {
+		final List<JasmineSpec> specsMap = new ArrayList<JasmineSpec>();
+		final NativeArray specsArray = (NativeArray) context.executeFunction(
+				suite, "specs");
+		for (final Object idObj : specsArray.getIds()) {
+			final NativeObject spec = (NativeObject) specsArray.get(
+					(Integer) idObj, specsArray);
 
-			JasmineSpec jasmineSpec = new JasmineSpec(spec);
+			final JasmineSpec jasmineSpec = new JasmineSpec(spec, description);
 			specsMap.add(jasmineSpec);
 			description.addChild(jasmineSpec.getDescription());
 		}
