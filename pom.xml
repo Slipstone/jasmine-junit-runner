@@ -5,7 +5,7 @@
 
 	<groupId>be.cegeka</groupId>
 	<artifactId>jasminejunitrunner</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>Jasmine Junit Runner</name>
 
 	<scm>

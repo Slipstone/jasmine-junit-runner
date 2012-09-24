@@ -1,21 +1,19 @@
 package be.klak.junit.jasmine;
 
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.ScriptableObject;
 
 class JasmineSpecFailureException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	private final ScriptableObject trace;
+	private final String message;
 
 	public JasmineSpecFailureException(final NativeObject specResultItem) {
-		this.trace = (ScriptableObject) specResultItem.get("trace",
-				specResultItem);
+		this.message = (String) specResultItem.get("message", specResultItem);
 	}
 
 	@Override
 	public String getMessage() {
-		return (String) trace.get("message", trace);
+		return message;
 	}
 
 }

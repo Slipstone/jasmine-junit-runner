@@ -20,7 +20,8 @@ import com.slipstone.FindFiles;
 public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
-	private static final String JASMINE_LIB_DIR = "lib/jasmine-1.0.2/";
+	private static final String JASMINE_LIB_DIR = "lib/jasmine-1.2.0/";
+	private static final String JASMINE_SUPPORT_DIR = "lib/jasmine-support/";
 
 	private JasmineDescriptions jasmineSuite;
 
@@ -81,7 +82,7 @@ public class JasmineTestRunner extends Runner {
 		try {
 			context.load(RhinoContext.BUNDLE_FILES.get(JASMINE_LIB_DIR
 					+ "jasmine.js"));
-			context.load(RhinoContext.BUNDLE_FILES.get(JASMINE_LIB_DIR
+			context.load(RhinoContext.BUNDLE_FILES.get(JASMINE_SUPPORT_DIR
 					+ "jasmine.delegator_reporter.js"));
 
 			context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
