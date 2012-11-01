@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -127,8 +128,8 @@ public class RhinoContext {
 	}
 
 	public void load(final String fileName) {
-		evalJS("load('" + fileName + "')");
-		// Main.processFile(this.jsContext, this.jsScope, fileName);
+		evalJS("load('" + StringEscapeUtils.escapeEcmaScript(fileName) + "')");
+//		 Main.processFile(this.jsContext, this.jsScope, fileName);
 	}
 
 	public Object executeFunction(final ScriptableObject object,

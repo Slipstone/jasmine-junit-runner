@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.Description;
@@ -121,8 +122,9 @@ public class JasmineTestRunner extends Runner {
 
 	private void resetEnvjsWindowSpace() {
 		try {
+			String filename = RhinoContext.BUNDLE_FILES.get("lib/blank.html").replace('\\', '/').replaceAll("^C\\:", "");
 			this.rhinoContext.evalJS("window.location = '"
-					+ RhinoContext.BUNDLE_FILES.get("lib/blank.html") + "';");
+					+ StringEscapeUtils.escapeEcmaScript(filename) + "';");
 		} catch (final ExecutionException e) {
 			throw new RuntimeException(
 					"Failed to load blank.html into window.location", e);
